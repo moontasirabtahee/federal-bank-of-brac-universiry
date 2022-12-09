@@ -1,0 +1,115 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+06:00";
+
+CREATE TABLE Bank(
+	bankName varchar(50) NOT NULL,
+ 	bankId int(11) NOT NULL PRIMARY KEY,
+    bankLocation varchar(100) NOT NULL
+);
+
+CREATE TABLE Branch(
+	branchId int(11) NOT NULL PRIMARY KEY,
+    branchName varchar(100) NOT NULL,
+    FOREIGN KEY(bankId) REFERENCES Bank(bankId)
+);
+
+CREATE TABLE Customer(
+	userID int(11) NOT NULL PRIMARY KEY,
+    userEmail text NOT NULL,
+    userPassword text NOT NULL,
+    userFirstName varchar(50) NOT NULL,
+    userMidName varchar(50),
+    userLastName varchar(50) NOT NULL,
+    balance varchar(100) NOT Null,
+    city varchar(50) NOT NULL,
+    address varchar(50) NOT NULL,
+    FOREIGN KEY(branchId) REFERENCES Branch(branchId),  
+	datee timestamp NOT Null DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Account(
+	accountID int(11) NOT NULL PRIMARY KEY, 
+	accBalance varchar(100) NOT Null,
+	opendate timestamp NOT Null DEFAULT CURRENT_TIMESTAMP,
+	accType varchar(50) Not Null,
+    FOREIGN KEY(userID) REFERENCES Customer(userID)
+);
+CREATE Table Employee(
+    empFirstName varchar(100) not Null,
+    empMidName varchar(100) not Null,
+    empLastName varchar(100) not Null,
+    empID int(11) not Null PRIMARY KEY,
+    empPassword text not NULL,
+    empEmail text Not Null,
+    designation varchar(50) not Null,
+    empSalary varchar(7) not Null,
+    FOREIGN KEY(branchId) REFERENCES Branch(branchId)
+);  
+
+CREATE TABLE feedback (
+  feedbackId int(11) NOT NULL PRIMARY key,
+  message text NOT NULL,
+  FOREIGN KEY(userID) REFERENCES Customer(userID),
+  Timedate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE AccountTransaction(
+    FOREIGN KEY(branchId) REFERENCES Branch(branchId),
+	transactionID int(11) NOT NULL PRIMARY KEY,
+    theAction varchar(100) NOT Null,
+    debit varchar(100) NOT Null,
+    credit varchar(100) NOT Null,
+    theAction varchar(100) NOT Null,
+    FOREIGN KEY(outerID) REFERENCES Customer(userID),
+    FOREIGN KEY(userID) REFERENCES Customer(userID),
+    Todaydate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    
+);
+
+
+
+CREATE TABLE notice (
+  id int(11) NOT NULL PRIMARY key,
+  FOREIGN KEY(userID) REFERENCES Customer(userID),
+  notice text NOT NULL,
+  date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE Branch
+  MODIFY branchId int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+ALTER TABLE feedback
+  MODIFY feedbackId int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+ALTER TABLE Account
+  MODIFY accountID int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+ALTER TABLE Bank
+  MODIFY bankId int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+ALTER TABLE Employee
+  MODIFY empID int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+ALTER TABLE AccountTransaction
+  MODIFY transactionID int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+ALTER TABLE Customer
+  MODIFY userID int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

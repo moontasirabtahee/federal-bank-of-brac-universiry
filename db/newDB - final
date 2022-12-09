@@ -1,0 +1,386 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Dec 09, 2022 at 03:16 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `bms`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account`
+--
+
+CREATE TABLE `account` (
+  `accountID` int(11) NOT NULL,
+  `accBalance` varchar(100) NOT NULL,
+  `opendate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `accType` varchar(50) NOT NULL,
+  `userID` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`accountID`, `accBalance`, `opendate`, `accType`, `userID`) VALUES
+(9999, '10000', '2018-09-14 18:00:00', 'Savings account', 999),
+(101101, '5000', '2018-09-14 18:00:00', 'Savings account', 1011),
+(201101, '1000', '2018-02-04 18:00:00', 'Salary account', 2011),
+(301101, '7000', '2017-12-31 18:00:00', 'Fixed deposit account.', 3011),
+(401101, '10000', '2018-09-24 18:00:00', 'Recurring deposit account', 4011),
+(501101, '6000', '2018-07-14 18:00:00', 'NRI accounts', 5011);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounttransaction`
+--
+
+CREATE TABLE `accounttransaction` (
+  `branchID` int(11) DEFAULT NULL,
+  `outerID` int(11) DEFAULT NULL,
+  `userID` int(11) DEFAULT NULL,
+  `transactionID` int(11) NOT NULL,
+  `theAction` varchar(100) NOT NULL,
+  `debit` varchar(100) DEFAULT NULL,
+  `credit` varchar(100) DEFAULT NULL,
+  `Todaydate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank`
+--
+
+CREATE TABLE `bank` (
+  `bankName` varchar(50) NOT NULL,
+  `bankId` int(11) NOT NULL,
+  `bankLocation` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bank`
+--
+
+INSERT INTO `bank` (`bankName`, `bankId`, `bankLocation`) VALUES
+('FEDERAL BANK LIMITED', 100, 'MOHAKHALI'),
+('TRUST BANK LIMITED', 200, 'DEMRA'),
+('JAMUNA BANK LIMITED', 300, 'GULSHAN'),
+('ISLAMIC BANK LIMITED', 400, 'CHITTAGONG'),
+('KRISHI BANK LIMITED', 500, 'KHULNA');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branch`
+--
+
+CREATE TABLE `branch` (
+  `branchId` int(11) NOT NULL,
+  `branchName` varchar(100) NOT NULL,
+  `bankId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `branch`
+--
+
+INSERT INTO `branch` (`branchId`, `branchName`, `bankId`) VALUES
+(101, 'MOHAKHALI FEDERAL BANK LIMITED', 100),
+(201, 'DEMRA TRUST BANK LIMITED', 200),
+(301, 'JAMUNA BANK LIMITED GULSHAN', 300),
+(401, 'ISLAMIC BANK LIMITED CHITTAGONG', 400),
+(501, 'KHULNA KRISHI BANK LIMITED', 500);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `userID` int(11) NOT NULL,
+  `userEmail` text NOT NULL,
+  `userPassword` text NOT NULL,
+  `userFirstName` varchar(50) NOT NULL,
+  `userMidName` varchar(50) DEFAULT NULL,
+  `userLastName` varchar(50) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `myaddress` varchar(50) NOT NULL,
+  `branchID` int(11) DEFAULT NULL,
+  `Todaydate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`userID`, `userEmail`, `userPassword`, `userFirstName`, `userMidName`, `userLastName`, `city`, `myaddress`, `branchID`, `Todaydate`) VALUES
+(999, 'customer@customer.com', ' 1234', 'x', 'y', 'z', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
+(1011, 'abir@gmail.com', ' 1204179212', 'Abir', 'Muhtadi', 'Khan', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
+(2011, 'naima@gmail.com', '1204179221', 'Naima', 'Farhana', 'Khan', 'DEMRA', 'KOTOWALI THANA', 201, '2022-12-09 13:54:31'),
+(3011, 'nafis@gmail.com', '1204179222', 'Nafis', 'Arafat', 'Khan', 'GULSHAN', 'DCC ROAD', 301, '2022-12-09 13:54:31'),
+(4011, 'tasneem@gmail.com', '1204179223', 'Tasneem', 'Raihana', 'Khan', 'CHITTAGONG', 'SHATH MOSHJID ROAD', 401, '2022-12-09 13:54:31'),
+(5011, 'nahid@gmail.com', '1204179224', 'Nahid', 'Tasin', 'Khan', 'KHULNA', 'BOISHAKI CENTER ROAD', 501, '2022-12-09 13:54:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee`
+--
+
+CREATE TABLE `employee` (
+  `empFirstName` varchar(100) NOT NULL,
+  `empMidName` varchar(100) NOT NULL,
+  `empLastName` varchar(100) NOT NULL,
+  `empID` int(11) NOT NULL,
+  `empPassword` text NOT NULL,
+  `empEmail` text NOT NULL,
+  `designation` varchar(50) NOT NULL,
+  `empSalary` varchar(7) NOT NULL,
+  `branchId` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`empFirstName`, `empMidName`, `empLastName`, `empID`, `empPassword`, `empEmail`, `designation`, `empSalary`, `branchId`) VALUES
+('Sabbir', 'Mazid', 'Khan', 901, '33332010915', 'sbir@gmail.com', 'manager', '140000', 101),
+('Saima', 'Faina', 'Khan', 902, '20133330814', 'saima@gmail.com', 'manager', '120000', 201),
+('Kafi', 'Rafat', 'Khan', 903, '20222210815', 'kafi@gmail.com', 'manager', '160000', 301),
+('Meem', 'Raina', 'Khan', 904, '20122220918', 'meem@gmail.com', 'cashier', '60000', 401),
+('Rahid', 'Tasin', 'Khan', 905, '20101111820', 'rahid@gmail.com', 'cashier', '40000', 501),
+('p', 'q', 'r', 9990999, '1234', 'manager@manager.com', 'manager', '100000', 101);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE `feedback` (
+  `feedbackId` int(11) NOT NULL,
+  `mymessage` text NOT NULL,
+  `userID` int(11) DEFAULT NULL,
+  `Timedate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`feedbackId`, `mymessage`, `userID`, `Timedate`) VALUES
+(12341, 'This is testing message to admin or manager', 999, '2022-09-14 18:00:00'),
+(12342, 'This is testing message to admin or manager', 999, '2022-02-04 18:00:00'),
+(12343, 'this is help card for admin', 999, '2021-12-31 18:00:00'),
+(12344, 'this is help card for admin', 999, '2022-09-24 18:00:00'),
+(12345, 'this is help card for admin', 999, '2022-07-14 18:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notice`
+--
+
+CREATE TABLE `notice` (
+  `id` int(11) NOT NULL,
+  `userID` int(11) DEFAULT NULL,
+  `notice` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notice`
+--
+
+INSERT INTO `notice` (`id`, `userID`, `notice`, `date`) VALUES
+(10, 5011, 'Dear Customer! <br> OUr privacy policy is changed for account information get new prospectus from your nearest branch.', '2022-12-14 06:33:40'),
+(20, 4011, 'Dear Customer,<br>\r\nOur privacy policy has been changed please visit nearest <kbd> MCB </kbd> branch for new prospectus.', '2022-12-14 06:56:48'),
+(30, 3011, 'Dear Customer! <br> OUr privacy policy is changed for account information get new prospectus from your nearest branch', '2022-12-14 06:57:20'),
+(40, 2011, 'Dear Customer! <br> OUr privacy policy is changed for account information get new prospectus from your nearest branch.', '2022-12-14 06:58:19'),
+(50, 1011, 'Dear Customer,<br>\r\nOur privacy policy has been changed please visit nearest <kbd> MCB </kbd> branch for new prospectus.', '2022-12-14 07:00:23');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`accountID`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- Indexes for table `accounttransaction`
+--
+ALTER TABLE `accounttransaction`
+  ADD PRIMARY KEY (`transactionID`),
+  ADD KEY `branchID` (`branchID`),
+  ADD KEY `outerID` (`outerID`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- Indexes for table `bank`
+--
+ALTER TABLE `bank`
+  ADD PRIMARY KEY (`bankId`);
+
+--
+-- Indexes for table `branch`
+--
+ALTER TABLE `branch`
+  ADD PRIMARY KEY (`branchId`),
+  ADD KEY `bankId` (`bankId`);
+
+--
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`userID`),
+  ADD KEY `branchID` (`branchID`);
+
+--
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`empID`),
+  ADD KEY `branchId` (`branchId`);
+
+--
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`feedbackId`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- Indexes for table `notice`
+--
+ALTER TABLE `notice`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userID` (`userID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `accounttransaction`
+--
+ALTER TABLE `accounttransaction`
+  MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bank`
+--
+ALTER TABLE `bank`
+  MODIFY `bankId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `branch`
+--
+ALTER TABLE `branch`
+  MODIFY `branchId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `employee`
+--
+ALTER TABLE `employee`
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `notice`
+--
+ALTER TABLE `notice`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `account`
+--
+ALTER TABLE `account`
+  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `customer` (`userID`);
+
+--
+-- Constraints for table `accounttransaction`
+--
+ALTER TABLE `accounttransaction`
+  ADD CONSTRAINT `accounttransaction_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `branch` (`branchId`),
+  ADD CONSTRAINT `accounttransaction_ibfk_2` FOREIGN KEY (`outerID`) REFERENCES `customer` (`userID`),
+  ADD CONSTRAINT `accounttransaction_ibfk_3` FOREIGN KEY (`userID`) REFERENCES `customer` (`userID`);
+
+--
+-- Constraints for table `branch`
+--
+ALTER TABLE `branch`
+  ADD CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`bankId`) REFERENCES `bank` (`bankId`);
+
+--
+-- Constraints for table `customer`
+--
+ALTER TABLE `customer`
+  ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `branch` (`branchId`);
+
+--
+-- Constraints for table `employee`
+--
+ALTER TABLE `employee`
+  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`branchId`) REFERENCES `branch` (`branchId`);
+
+--
+-- Constraints for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `customer` (`userID`);
+
+--
+-- Constraints for table `notice`
+--
+ALTER TABLE `notice`
+  ADD CONSTRAINT `notice_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `customer` (`userID`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
