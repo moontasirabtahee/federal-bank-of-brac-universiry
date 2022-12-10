@@ -6,7 +6,7 @@
 	<?php require 'assets/function.php'; ?>
 	<?php
     $con = new mysqli('localhost','root','','bms');
-    define('bankname', 'Federal Bank of BRACU');
+    define('bankname', 'Federal Bank of BRAC University');
 	session_start();
 	
 		$error = "";
@@ -20,7 +20,7 @@
 		    $result = $con->query("select * from customer where userEmail='$user' AND userPassword='$pass'");
 		    if($result->num_rows>0)
 		    { 
-		      $data = $result->fetch_assoc(); // somossa
+		      $data = $result->fetch_assoc(); 
 		      $_SESSION['userId']=$data['userID'];
 		    //   $_SESSION['user'] = $data;
 		      header('location:index.php');
