@@ -1,5 +1,5 @@
 <form class="form-inline my-2 my-lg-0">
-        <a href="" class="btn btn-outline-primary" data-toggle="tooltip" title="Your current Account Balance">Acount Balance : Rs.<?php echo $userData['accBalance']; ?></a>  
+        <a href="" class="btn btn-outline-primary" data-toggle="tooltip" title="Your current Account Balance">Acount Balance : Tk.<?php echo $userData['accBalance']; ?></a>  
         <a href="accounts.php" data-toggle="tooltip" title="Account Summary" class="btn btn-outline-info mx-1" ><i class="fa fa-book fa-fw"></i></a> 
         <a href="notice.php" data-toggle="tooltip" title="View Notice" class="btn btn-outline-info mx-1" ><i class="fa fa-envelope fa-fw"></i></a> 
         <a href="feedback.php" data-toggle="tooltip" title="Help?" class="btn btn-outline-info mx-1" ><i class="fa fa-question fa-fw"></i></a> 

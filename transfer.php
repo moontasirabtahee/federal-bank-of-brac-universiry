@@ -6,7 +6,7 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Federal Bank of BRACU</title>
+  <title>Federal Bank of BRAC University</title>
   <?php require 'assets/autoloader.php'; ?>
   <?php require 'assets/db.php'; ?>
   <?php require 'assets/function.php'; ?>
@@ -18,12 +18,12 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
         $user = $_POST['email'];
         $pass = $_POST['password'];
        
-        $result = $con->query("select * from userAccounts where email='$user' AND password='$pass'");
+        $result = $con->query("select * from customer where userEmail='$user' AND userPassword='$pass'");
         if($result->num_rows>0)
         { 
           session_start();
           $data = $result->fetch_assoc();
-          $_SESSION['userId']=$data['id'];
+          $_SESSION['userId']=$data['userID'];
           $_SESSION['user'] = $data;
           header('location:index.php');
          }
@@ -75,21 +75,21 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
       </form>
       <?php if (isset($_POST['get'])) 
       {
-        $array2 = $con->query("select * from otheraccounts where accountNo = '$_POST[otherNo]'");
-        $array3 = $con->query("select * from userAccounts where accountNo = '$_POST[otherNo]'");
+        $array2 = $con->query("select * from account ac , customer cs , branch br where ac.userID = cs.userID  and cs.branchID = br.branchID and accountID  = '$_POST[otherNo]'");
+        $array3 = $con->query("select * from account where accountID  = '$_POST[otherNo]'");
         {
           if ($array2->num_rows > 0) 
           { $row2 = $array2->fetch_assoc();
             echo "<div class='alert alert-success w-50 mx-auto'>
                   <form method='POST'>
                     Account No.
-                    <input type='text' value='$row2[accountNo]' name='otherNo' class='form-control ' readonly required>
+                    <input type='text' value='$row2[accountID]' name='otherNo' class='form-control ' readonly required>
                     Account Holder Name.
-                    <input type='text' class='form-control' value='$row2[holderName]' readonly required>
+                    <input type='text' class='form-control' value='$row2[userFirstName]  $row2[userMidName]  $row2[userLastName]' readonly required>
                     Account Holder Bank Name.
-                    <input type='text' class='form-control' value='$row2[bankName]' readonly required>
+                    <input type='text' class='form-control' value='$row2[branchName]' readonly required>
                     Enter Amount for tranfer.
-                    <input type='number' name='amount' class='form-control' min='1' max='$userData[balance]' required>
+                    <input type='number' name='amount' class='form-control' min='1' max='$userData[accBalance]' required>
                     <button type='submit' name='transfer' class='btn btn-primary btn-bloc btn-sm my-1'>Tranfer</button>
                   </form>
                 </div>";
@@ -98,13 +98,13 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
             echo "<div class='alert alert-success w-50 mx-auto'>
                   <form method='POST'>
                     Account No.
-                    <input type='text' value='$row2[accountNo]' name='otherNo' class='form-control ' readonly required>
+                    <input type='text' value='$row2[accountID]' name='otherNo' class='form-control ' readonly required>
                     Account Holder Name.
-                    <input type='text' class='form-control' value='$row2[name]' readonly required>
+                    <input type='text' class='form-control' value='$row2[userFirstName]  $row2[userMidName]  $row2[userLastName]' readonly required>
                     Account Holder Bank Name.
-                    <input type='text' class='form-control' value='".bankname."' readonly required>
+                    <input type='text' class='form-control' value='$row2[branchName]' readonly required>
                     Enter Amount for tranfer.
-                    <input type='number' name='amount' class='form-control' min='1' max='$userData[balance]' required>
+                    <input type='number' name='amount' class='form-control' min='1' max='$userData[accBalance]' required>
                     <button type='submit' name='transferSelf' class='btn btn-primary btn-bloc btn-sm my-1'>Tranfer</button>
                   </form>
                 </div>";
@@ -118,29 +118,43 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
     <h5>Transfer History</h5>
     <div id="list-group rounded-0">
     <?php
-    if (isset($_POST['transferSelf']))
-    {
-      $amount = $_POST['amount'];
-      setBalance($amount,'debit',$userData['accountNo']);
-      setBalance($amount,'credit',$_POST['otherNo']);
-      makeTransaction('transfer',$amount,$_POST['otherNo']);
-      echo "<script>alert('Transfer Successfull');window.location.href='transfer.php'</script>";
-    }
+    // if (isset($_POST['transferSelf']))
+    // {
+    //   $amount = $_POST['amount'];
+    //   setBalance($amount,'debit',$userData['accountID']);
+    //   setBalance($amount,'credit',$_POST['otherNo']);
+    //   makeTransaction('transfer',$amount,$_POST['otherNo']);
+    //   echo "<script>alert('Transfer Successfull');window.location.href='transfer.php'</script>";
+    // }
     if (isset($_POST['transfer']))
     {
       $amount = $_POST['amount'];
-      setBalance($amount,'debit',$userData['accountNo']);
+      setBalance($amount,'debit',$userData['accountID']);
+      setBalance($amount,'credit',$_POST['otherNo']);
+
+      // $array2 = $con->query("select * from account ac , customer cs , branch br where ac.userID = cs.userID  and cs.branchID = br.branchID and accountID  = '$_POST[otherNo]'");
+      //   // $array3 = $con->query("select * from account where accountID  = '$_POST[otherNo]'");
+      //   {
+      //     if ($array2->num_rows > 0) 
+      //     { $row2 = $array2->fetch_assoc();
+      //       makeTransaction('transfer',$amount,$row2['userID']);
+      //       echo "<script>alert('Transfer Successfull');window.location.href='transfer.php'</script>";
+          
+      //     }
+      //   }
+
       makeTransaction('transfer',$amount,$_POST['otherNo']);
       echo "<script>alert('Transfer Successfull');window.location.href='transfer.php'</script>";
+          
     }
-      $array = $con->query("select * from transaction where userId = '$userData[id]' AND action = 'transfer' order by date desc");
+      $array = $con->query("select * from accounttransaction where userId = '$userData[userID]' AND theAction = 'transfer' order by Todaydate desc");
       if ($array ->num_rows > 0) 
       {
          while ($row = $array->fetch_assoc()) 
          {
-            if ($row['action'] == 'transfer') 
+            if ($row['theAction'] == 'transfer') 
             {
-              echo "<div class='list-group-item list-group-item-action bg-gradient-info'>Transfer have been made for  Rs.$row[debit] from your account at $row[date] in  account no.$row[other]</div>";
+              echo "<div class='list-group-item list-group-item-action bg-gradient-info'>Transfer have been made for  Rs.$row[debit] from your account at $row[Todaydate] in  account no.$row[outerAcc]</div>";
             }
 
          }

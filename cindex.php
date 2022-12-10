@@ -5,7 +5,7 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Federal Bank of BRACU</title>
+  <title>Federal Bank of BRAC University</title>
   <?php require 'assets/autoloader.php'; ?>
   <?php require 'assets/db.php'; ?>
   <?php require 'assets/function.php'; ?>
@@ -79,8 +79,7 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
     </p>
     <?php if (isset($_POST['get'])) 
       {
-        $array2 = $con->query("select * from otheraccounts where accountNo = '$_POST[otherNo]'");
-        $array3 = $con->query("select * from userAccounts where accountNo = '$_POST[otherNo]'");
+        $array2 = $con->query("select * from account at,customer cs where at.userID = cs.userID and accountID = '$_POST[otherNo]'");
         {
           if ($array2->num_rows > 0) 
           { $row2 = $array2->fetch_assoc();
@@ -88,57 +87,60 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
                   <div class='col'>
                   <form method='POST'>
                     Account No.
-                    <input type='text' value='$row2[accountNo]' name='otherNo' class='form-control ' readonly required>
+                    <input type='text' value='$row2[accountID]' name='otherNo' class='form-control ' readonly required>
                     Account Holder Name.
-                    <input type='text' class='form-control' value='$row2[holderName]' readonly required>
+                    <input type='text' class='form-control' value='$row2[userFirstName] $row2[userMidName] $row2[userLastName]' readonly required>
                     Account Holder Bank Name.
-                    <input type='text' class='form-control' value='$row2[bankName]' readonly required>
+                    <input type='text' class='form-control' value='$row2[accType]' readonly required>
                      
                   
                   </div>
                   <div class='col'>
                     Bank Balance
-                    <input type='text' class='form-control my-1'  value='Rs.$row2[balance]' readonly required>
+                    <input type='text' class='form-control my-1'  value='Rs.$row2[accBalance]' readonly required>
                     <input type='number' class='form-control my-1' name='checkno' placeholder='Write Check Number' required>
-                    <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount' max='$row2[balance]' required>
-                   <button type='submit' name='withdrawOther' class='btn btn-success btn-bloc btn-sm my-1'> Withdraw</button></form>
-                  </div>
-                </div>";
-          }elseif ($array3->num_rows > 0) {
-           $row2 = $array3->fetch_assoc();
-            echo "
-            <div class='row'>
-                  <div class='col'>
-                  
-                    Account No.
-                    <input type='text' value='$row2[accountNo]' name='otherNo' class='form-control ' readonly required>
-                    Account Holder Name.
-                    <input type='text' class='form-control' value='$row2[name]' readonly required>
-                    Account Holder Bank Name.
-                    <input type='text' class='form-control' value='".bankname."' readonly required>Bank Balance
-                    <input type='text' class='form-control my-1'  value='Rs.$row2[balance]' readonly required>
-                     
-                  
-                  </div>
-                  <div class='col'>
-                    Transaction Process.
-                    <form method='POST'>
-                     
-                    <input type='hidden' value='$row2[accountNo]' name='accountNo' class='form-control ' required>
-                    <input type='hidden' value='$row2[id]' name='userId' class='form-control ' required>
-                    <input type='number' class='form-control my-1' name='checkno' placeholder='Write Check Number' required>
-                    <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for withdraw' max='$row2[balance]' required>
-                   <button type='submit' name='withdraw' class='btn btn-primary btn-bloc btn-sm my-1'> Withdraw</button></form><form method='POST'> 
-                    <input type='hidden' value='$row2[accountNo]' name='accountNo' class='form-control ' required>
-                    <input type='hidden' value='$row2[id]' name='userId' class='form-control ' required>
-                   <input type='number' class='form-control my-1' name='checkno' placeholder='Write Check Number' required>
-                    <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for deposit'  required>
-
+                    <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount' max='$row2[accBalance]' required>
+                   <button type='submit' name='withdraw' class='btn btn-success btn-bloc btn-sm my-1'> Withdraw</button></form>
                    <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Deposit</button></form>
+
                   </div>
-                </div>
-            ";
-          }
+                </div>";}
+
+          // }elseif ($array2->num_rows > 0) {
+          //  $row2 = $array3->fetch_assoc();
+          //   echo "
+          //   <div class='row'>
+          //         <div class='col'>
+                  
+          //           Account No.
+          //           <input type='text' value='$row2[accountID]' name='otherNo' class='form-control ' readonly required>
+          //           Account Holder Name.
+          //           <input type='text' class='form-control' value='$row2[userFirstName] $row2[userMidName] $row2[userLastName]' readonly required>
+          //           Account Holder Bank Name.
+          //           <input type='text' class='form-control' value='$row2[accType]' readonly required>Bank Balance
+          //           <input type='text' class='form-control my-1'  value='Rs.$row2[accBalance]' readonly required>
+                     
+                  
+          //         </div>
+          //         <div class='col'>
+          //           Transaction Process.
+          //           <form method='POST'>
+                     
+          //           <input type='hidden' value='$row2[accountID]' name='accountNo' class='form-control ' required>
+          //           <input type='hidden' value='$row2[id]' name='userId' class='form-control ' required>
+          //           <input type='number' class='form-control my-1' name='checkno' placeholder='Write Check Number' required>
+          //           <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for withdraw' max='$row2[balance]' required>
+          //          <button type='submit' name='withdraw' class='btn btn-primary btn-bloc btn-sm my-1'> Withdraw</button></form><form method='POST'> 
+          //           <input type='hidden' value='$row2[accountNo]' name='accountNo' class='form-control ' required>
+          //           <input type='hidden' value='$row2[id]' name='userId' class='form-control ' required>
+          //          <input type='number' class='form-control my-1' name='checkno' placeholder='Write Check Number' required>
+          //           <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount for deposit'  required>
+
+          //          <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Deposit</button></form>
+          //         </div>
+          //       </div>
+          //   ";
+          // }
           else
             echo "<div class='alert alert-success w-50 mx-auto'>Account No. $_POST[otherNo] Does not exist</div>";
         }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2022 at 03:16 PM
+-- Generation Time: Dec 10, 2022 at 08:22 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -40,7 +40,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `accBalance`, `opendate`, `accType`, `userID`) VALUES
-(9999, '10000', '2018-09-14 18:00:00', 'Savings account', 999),
+(9999, '9807', '2018-09-14 18:00:00', 'Savings account', 999),
 (101101, '5000', '2018-09-14 18:00:00', 'Savings account', 1011),
 (201101, '1000', '2018-02-04 18:00:00', 'Salary account', 2011),
 (301101, '7000', '2017-12-31 18:00:00', 'Fixed deposit account.', 3011),
@@ -54,8 +54,7 @@ INSERT INTO `account` (`accountID`, `accBalance`, `opendate`, `accType`, `userID
 --
 
 CREATE TABLE `accounttransaction` (
-  `branchID` int(11) DEFAULT NULL,
-  `outerID` int(11) DEFAULT NULL,
+  `outerAcc` int(11) DEFAULT NULL,
   `userID` int(11) DEFAULT NULL,
   `transactionID` int(11) NOT NULL,
   `theAction` varchar(100) NOT NULL,
@@ -63,6 +62,10 @@ CREATE TABLE `accounttransaction` (
   `credit` varchar(100) DEFAULT NULL,
   `Todaydate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `accounttransaction`
+--
 
 -- --------------------------------------------------------
 
@@ -134,8 +137,8 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`userID`, `userEmail`, `userPassword`, `userFirstName`, `userMidName`, `userLastName`, `city`, `myaddress`, `branchID`, `Todaydate`) VALUES
-(999, 'customer@customer.com', ' 1234', 'x', 'y', 'z', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
-(1011, 'abir@gmail.com', ' 1204179212', 'Abir', 'Muhtadi', 'Khan', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
+(999, 'customer@customer.com', '1234', 'x', 'y', 'z', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
+(1011, 'abir@gmail.com', '1204179212', 'Abir', 'Muhtadi', 'Khan', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
 (2011, 'naima@gmail.com', '1204179221', 'Naima', 'Farhana', 'Khan', 'DEMRA', 'KOTOWALI THANA', 201, '2022-12-09 13:54:31'),
 (3011, 'nafis@gmail.com', '1204179222', 'Nafis', 'Arafat', 'Khan', 'GULSHAN', 'DCC ROAD', 301, '2022-12-09 13:54:31'),
 (4011, 'tasneem@gmail.com', '1204179223', 'Tasneem', 'Raihana', 'Khan', 'CHITTAGONG', 'SHATH MOSHJID ROAD', 401, '2022-12-09 13:54:31'),
@@ -169,7 +172,7 @@ INSERT INTO `employee` (`empFirstName`, `empMidName`, `empLastName`, `empID`, `e
 ('Kafi', 'Rafat', 'Khan', 903, '20222210815', 'kafi@gmail.com', 'manager', '160000', 301),
 ('Meem', 'Raina', 'Khan', 904, '20122220918', 'meem@gmail.com', 'cashier', '60000', 401),
 ('Rahid', 'Tasin', 'Khan', 905, '20101111820', 'rahid@gmail.com', 'cashier', '40000', 501),
-('p', 'q', 'r', 9990999, '1234', 'manager@manager.com', 'manager', '100000', 101);
+('p', 'q', 'r', 6699, '1234', 'manager@manager.com', 'manager', '100000', 101);
 
 -- --------------------------------------------------------
 
@@ -193,7 +196,8 @@ INSERT INTO `feedback` (`feedbackId`, `mymessage`, `userID`, `Timedate`) VALUES
 (12342, 'This is testing message to admin or manager', 999, '2022-02-04 18:00:00'),
 (12343, 'this is help card for admin', 999, '2021-12-31 18:00:00'),
 (12344, 'this is help card for admin', 999, '2022-09-24 18:00:00'),
-(12345, 'this is help card for admin', 999, '2022-07-14 18:00:00');
+(12345, 'this is help card for admin', 999, '2022-07-14 18:00:00'),
+(12346, 'I think I am facing some problem with money transfer options\r\n', 999, '2022-12-10 07:19:25');
 
 -- --------------------------------------------------------
 
@@ -216,8 +220,9 @@ INSERT INTO `notice` (`id`, `userID`, `notice`, `date`) VALUES
 (10, 5011, 'Dear Customer! <br> OUr privacy policy is changed for account information get new prospectus from your nearest branch.', '2022-12-14 06:33:40'),
 (20, 4011, 'Dear Customer,<br>\r\nOur privacy policy has been changed please visit nearest <kbd> MCB </kbd> branch for new prospectus.', '2022-12-14 06:56:48'),
 (30, 3011, 'Dear Customer! <br> OUr privacy policy is changed for account information get new prospectus from your nearest branch', '2022-12-14 06:57:20'),
-(40, 2011, 'Dear Customer! <br> OUr privacy policy is changed for account information get new prospectus from your nearest branch.', '2022-12-14 06:58:19'),
-(50, 1011, 'Dear Customer,<br>\r\nOur privacy policy has been changed please visit nearest <kbd> MCB </kbd> branch for new prospectus.', '2022-12-14 07:00:23');
+(40, 2011, 'Dear Customer! <br> Our privacy policy is changed for account information get new prospectus from your nearest branch.', '2022-12-14 06:58:19'),
+(50, 1011, 'Dear Customer,<br>\r\nOur privacy policy has been changed please visit nearest <kbd> MCB </kbd> branch for new prospectus.', '2022-12-14 07:00:23'),
+(60, 999, 'Please Check the transfer money options', '2022-12-10 06:29:34');
 
 --
 -- Indexes for dumped tables
@@ -235,8 +240,7 @@ ALTER TABLE `account`
 --
 ALTER TABLE `accounttransaction`
   ADD PRIMARY KEY (`transactionID`),
-  ADD KEY `branchID` (`branchID`),
-  ADD KEY `outerID` (`outerID`),
+  ADD KEY `outerAcc` (`outerAcc`),
   ADD KEY `userID` (`userID`);
 
 --
@@ -288,49 +292,47 @@ ALTER TABLE `notice`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5102;
 --
 -- AUTO_INCREMENT for table `accounttransaction`
 --
 ALTER TABLE `accounttransaction`
-  MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `bank`
 --
 ALTER TABLE `bank`
-  MODIFY `bankId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `bankId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `branchId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-
+  MODIFY `branchId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=999;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
 
 --
 -- AUTO_INCREMENT for table `notice`
 --
 ALTER TABLE `notice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- Constraints for dumped tables
@@ -346,8 +348,7 @@ ALTER TABLE `account`
 -- Constraints for table `accounttransaction`
 --
 ALTER TABLE `accounttransaction`
-  ADD CONSTRAINT `accounttransaction_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `branch` (`branchId`),
-  ADD CONSTRAINT `accounttransaction_ibfk_2` FOREIGN KEY (`outerID`) REFERENCES `customer` (`userID`),
+  ADD CONSTRAINT `accounttransaction_ibfk_2` FOREIGN KEY (`outerAcc`) REFERENCES `account` (`accountID`),
   ADD CONSTRAINT `accounttransaction_ibfk_3` FOREIGN KEY (`userID`) REFERENCES `customer` (`userID`);
 
 --

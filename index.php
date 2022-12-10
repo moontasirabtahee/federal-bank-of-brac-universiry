@@ -40,7 +40,7 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
 <div class="row w-100" >
   <div class="col" style="padding: 22px;padding-top: 0">
     <div class="jumbotron shadowBlack" style="padding: 25px;min-height: 241px;max-height: 241px">
-  <h4 class="display-5">Welecome to Federal Bank of BRACU</h4>
+  <h4 class="display-5">Welecome to Federal Bank of BRAC University</h4>
   <p  class="lead alert alert-warning"><b>Latest Notification:</b>
 
   <?php 

@@ -1,6 +1,6 @@
 <?php 
     $con = new mysqli('localhost','root','','bms');
-    define('bankname', 'Federal Bank of BRACU',true);
+    define('bankname', 'Federal Bank of BRAC University',true);
     $uid = '';
     if(isset($_SESSION['userId'])){
     $uid = $_SESSION['userId'];
