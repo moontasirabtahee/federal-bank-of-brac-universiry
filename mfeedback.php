@@ -1,3 +1,5 @@
+<--Updated-->
+
 <?php
 session_start();
 if(!isset($_SESSION['managerId'])){ header('location:login.php');}
@@ -21,7 +23,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
  <a class="navbar-brand" href="#">
     <img src="images/logo.png" style="object-fit:cover;object-position:center center" width="30" height="30" class="d-inline-block align-top" alt="">
-   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo bankname; ?>
+   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo 'Fedaral Bank of BRAC'; ?>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -47,13 +49,13 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <div class="container">
 <div class="card w-100 text-center shadowBlue">
   <div class="card-header">
-    Feedback from Account Holder
+    Feedback from Account Holders
   </div>
   <div class="card-body">
    <table class="table table-bordered table-sm bg-dark text-white">
   <thead>
     <tr>
-      <th scope="col">From</th>
+      <th scope="col">Name</th>
       <th scope="col">Account No.</th>
       <th scope="col">Contact</th>
       <th scope="col">Message</th>
@@ -63,17 +65,17 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   <tbody>
     <?php
       $i=0;
-      $array = $con->query("select * from useraccounts,feedback where useraccounts.id = feedback.userId");
+      $array = $con->query("select * from account,customer,feedback where feedback.userID = customer.userID AND customer.userID=account.userID");
       if ($array->num_rows > 0)
       {
         while ($row = $array->fetch_assoc())
         {
     ?>
       <tr>
-        <td><?php echo $row['name'] ?></td>
-        <td><?php echo $row['accountNo'] ?></td>
-        <td><?php echo $row['number'] ?></td>
-        <td><?php echo $row['message'] ?></td>
+        <td><?php echo $row['userFirstName'] ?></td>
+        <td><?php echo $row['accountID'] ?></td>
+        <td><?php echo $row['userEmail'] ?></td>
+        <td><?php echo $row['mymessage'] ?></td>
         <td>
           <a href="mfeedback.php?delete=<?php echo $row['feedbackId'] ?>" class='btn btn-danger btn-sm' data-toggle='tooltip' title="Delete this Message">Delete</a>
         </td>
@@ -86,7 +88,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   </tbody>
 </table>
   <div class="card-footer text-muted">
-    <?php echo bankname; ?>
+    <?php echo 'Fedaral Bank of BRAC'; ?>
   </div>
 </div>
 </body>

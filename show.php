@@ -1,3 +1,6 @@
+<-- Updated -->
+
+
 <?php
 session_start();
 if(!isset($_SESSION['managerId'])){ header('location:login.php');}
@@ -11,7 +14,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   <?php require 'assets/function.php'; ?>
   <?php if (isset($_GET['delete'])) 
   {
-    if ($con->query("delete from useraccounts where id = '$_GET[id]'"))
+    if ($con->query("delete from customer where userID = '$_GET[userID]'"))
     {
       header("location:mindex.php");
     }
@@ -21,7 +24,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
  <a class="navbar-brand" href="#">
     <img src="images/logo.png" style="object-fit:cover;object-position:center center" width="30" height="30" class="d-inline-block align-top" alt="">
-   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo bankname; ?>
+   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo 'Fedaral Bank of BRAC'; ?>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -45,48 +48,46 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   </div>
 </nav><br><br><br>
 <?php 
-  $array = $con->query("select * from useraccounts,branch where useraccounts.id = '$_GET[id]' AND useraccounts.branch = branch.branchId");
+  $array = $con->query("select * from customer,branch,account where customer.userID = '$_GET[userID]' AND customer.branchID = branch.branchId AND customer.userID=account.userID");
   $row = $array->fetch_assoc();
  ?>
 <div class="container">
 <div class="card w-100 text-center shadowBlue">
   <div class="card-header">
-    Account profile for <?php echo $row['name'];echo "<kbd>#";echo $row['accountNo'];echo "</kbd>"; ?>
+    Account profile for <?php echo $row['userFirstName'];echo "<kbd>#";echo $row['accountID'];echo "</kbd>"; ?>
   </div>
   <div class="card-body">
     <table class="table table-bordered">
       <tbody>
         <tr>
           <td>Name</td>
-          <th><?php echo $row['name'] ?></th>
+          <th><?php echo $row['userFirstName'] ?></th>
           <td>Account No</td>
-          <th><?php echo $row['accountNo'] ?></th>
+          <th><?php echo $row['accountID'] ?></th>
         </tr><tr>
           <td>Branch Name</td>
           <th><?php echo $row['branchName'] ?></th>
           <td>Brach Code</td>
-          <th><?php echo $row['branchNo'] ?></th>
+          <th><?php echo $row['branchID'] ?></th>
         </tr><tr>
           <td>Current Balance</td>
-          <th><?php echo $row['balance'] ?></th>
+          <th><?php echo $row['accBalance'] ?></th>
           <td>Account Type</td>
-          <th><?php echo $row['accountType'] ?></th>
+          <th><?php echo $row['accType'] ?></th>
         </tr><tr>
-          <td>Cnic</td>
-          <th><?php echo $row['cnic'] ?></th>
           <td>City</td>
           <th><?php echo $row['city'] ?></th>
         </tr><tr>
-          <td>Contact Number</td>
-          <th><?php echo $row['number'] ?></th>
+          <td>Email</td>
+          <th><?php echo $row['userEmail'] ?></th>
           <td>Address</td>
-          <th><?php echo $row['address'] ?></th>
+          <th><?php echo $row['myaddress'] ?></th>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="card-footer text-muted">
-    <?php echo bankname; ?>
+    <?php echo 'Fedaral Bank of BRAC'; ?>
   </div>
 </div>
 

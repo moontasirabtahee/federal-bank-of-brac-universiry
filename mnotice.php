@@ -1,3 +1,5 @@
+<--Updated-->
+
 <?php
 session_start();
 if(!isset($_SESSION['managerId'])){ header('location:login.php');}
@@ -11,7 +13,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   <?php require 'assets/function.php'; ?>
   <?php if (isset($_GET['delete'])) 
   {
-    if ($con->query("delete from useraccounts where id = '$_GET[id]'"))
+    if ($con->query("delete from customer where userID = '$_GET[userID]'"))
     {
       header("location:mindex.php");
     }
@@ -21,7 +23,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
  <a class="navbar-brand" href="#">
     <img src="images/logo.png" style="object-fit:cover;object-position:center center" width="30" height="30" class="d-inline-block align-top" alt="">
-   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo bankname; ?>
+   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo 'Fedaral Bank of BRAC'; ?>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -45,7 +47,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   </div>
 </nav><br><br><br>
 <?php 
-  $array = $con->query("select * from useraccounts where id = '$_GET[id]'");
+  $array = $con->query("select * from customer,notice where customer.userID = '$_GET[userID]' AND customer.userID=notice.UserID");
   $row = $array->fetch_assoc();
 
 
@@ -53,13 +55,13 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <div class="container">
 <div class="card w-100 text-center shadowBlue">
   <div class="card-header">
-    Send Notice to <?php echo $row['name'] ?>
+    Send Notice to <?php echo $row['userFirstName'] ?>
   </div>
   <div class="card-body">
     <form method="POST">
           <div class="alert alert-success w-50 mx-auto">
-            <h5>Write notice for <?php echo $row['name'] ?></h5>
-            <input type="hidden" name="userId" value="<?php echo $row['id'] ?>">
+            <h5>Write notice for <?php echo $row['userFirstName'] ?></h5>
+            <input type="hidden" name="userId" value="<?php echo $row['userID'] ?>">
             <textarea class="form-control" name="notice" required placeholder="Write your message"></textarea>
             <button type="submit" name="send" class="btn btn-primary btn-block btn-sm my-1">Send</button>
           </div>
@@ -75,7 +77,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
     ?>  
   </div>
   <div class="card-footer text-muted">
-    <?php echo bankname; ?>
+    <?php echo 'Fedaral Bank of BRAC'; ?>
   </div>
 </div>
 

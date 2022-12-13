@@ -11,7 +11,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   <?php require 'assets/function.php'; ?>
   <?php if (isset($_GET['delete'])) 
   {
-    if ($con->query("delete from useraccounts where id = '$_GET[id]'"))
+    if ($con->query("delete from customer where userID = '$_GET[userID]'"))
     {
       header("location:mindex.php");
     }
@@ -21,7 +21,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
  <a class="navbar-brand" href="#">
     <img src="images/logo.png" style="object-fit:cover;object-position:center center" width="30" height="30" class="d-inline-block align-top" alt="">
-   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo bankname; ?>
+   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo 'Fedaral Bank of BRAC'; ?>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -32,7 +32,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
       <li class="nav-item ">
         <a class="nav-link " href="mindex.php">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item ">  <a class="nav-link" href="maccounts.php">Accounts</a></li>
+      <li class="nav-item ">  <a class="nav-link" href="maccounts.php">Staff Accounts</a></li>
       <li class="nav-item active">  <a class="nav-link" href="maddnew.php">Add New Account</a></li>
       <li class="nav-item ">  <a class="nav-link" href="mfeedback.php">Feedback</a></li>
       <!-- <li class="nav-item ">  <a class="nav-link" href="transfer.php">Funds Transfer</a></li> -->
@@ -47,7 +47,8 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <?php
 if (isset($_POST['saveAccount']))
 {
-  if (!$con->query("insert into useraccounts (name,cnic,accountNo,accountType,city,address,email,password,balance,source,number,branch) values ('$_POST[name]','$_POST[cnic]','$_POST[accountNo]','$_POST[accountType]','$_POST[city]','$_POST[address]','$_POST[email]','$_POST[password]','$_POST[balance]','$_POST[source]','$_POST[number]','$_POST[branch]')")) {
+  if (!$con->query("insert into customer (userID, userEmail, userPassword, userFirstName, userMidName, userLastName, city, myaddress, branchID) values ('$_POST[userID]', '$_POST[userEmail]', '$_POST[userPassword]', '$_POST[userFirstName]', '$_POST[userMidName]','$_POST[userLastName]','$_POST[city]','$_POST[myaddress]','$_POST[branchId]')"))
+  {
     echo "<div claass='alert alert-success'>Failed. Error is:".$con->error."</div>";
   }
   else
@@ -56,7 +57,7 @@ if (isset($_POST['saveAccount']))
 }
 if (isset($_GET['del']) && !empty($_GET['del']))
 {
-  $con->query("delete from login where id ='$_GET[del]'");
+  $con->query("delete from account where account.userID ='$_GET[del]'");
 }
   
   
@@ -64,68 +65,47 @@ if (isset($_GET['del']) && !empty($_GET['del']))
 <div class="container">
 <div class="card w-100 text-center shadowBlue">
   <div class="card-header">
-   New Account Forum
+   New Account Forum (Customer Details)
   </div>
   <div class="card-body bg-dark text-white">
     <table class="table">
       <tbody>
         <tr>
           <form method="POST">
-          <th>Name</th>
-          <td><input type="text" name="name" class="form-control input-sm" required></td>
-          <th>CNIC</th>
-          <td><input type="number" name="cnic" class="form-control input-sm" required></td>
+          <th>ID</th>
+          <td><input class="form-control" type="number" name="userID" id="userID" required placeholder="User ID"></td>
+          <th>Email</th>
+          <td><input class="form-control" type="email" name="userEmail" id="userEmail" required placeholder="User Email"></td>
+          <th>Password</th>
+          <td><input class="form-control" type="password" name="userPassword" id="userPassword" required placeholder="User Password"></td>
         </tr>
+
         <tr>
-          <th>Account Number</th>
-          <td><input type="" name="accountNo" readonly value="<?php echo time() ?>" class="form-control input-sm" required></td>
-          <th>Account Type</th>
-          <td>
-            <select class="form-control input-sm" name="accountType" required>
-              <option value="current" selected>Current</option>
-              <option value="saving" selected>Saving</option>
-            </select>
-          </td>
+          <th>First Name </th>
+          <td><input class="form-control" type="text" name="userFirstName" id="userFirstName" required placeholder="User First Name"></td>
+          <th>Mid Name</th>
+          <td><input class="form-control" type="text" name="userMidName" id="userMidName"  required placeholder="User Middle Name"></td>
+          <th>Last Name</th>
+          <td><input class="form-control" type="text" name="userLastName" id="userLastName" required placeholder="User Last Name"></td>
+          
         </tr>
         <tr>
           <th>City</th>
-          <td><input type="text" name="city" class="form-control input-sm" required></td>
+          <td><input class="form-control" type="text" name="city" id="city" required placeholder="User City"></td>
           <th>Address</th>
-          <td><input type="text" name="address" class="form-control input-sm" required></td>
-        </tr>
-        <tr>
-          <th>Email</th>
-          <td><input type="email" name="email" class="form-control input-sm" required></td>
-          <th>Password</th>
-          <td><input type="password" name="password" class="form-control input-sm" required></td>
-        </tr>
-        <tr>
-          <th>Deposit</th>
-          <td><input type="number" name="balance" min="500" class="form-control input-sm" required></td>
-          <th>Source of income</th>
-          <td><input type="text" name="source" class="form-control input-sm" required></td>
-        </tr>
-        <tr>
-          <th>Contact Number</th>
-          <td><input type="number" name="number"  class="form-control input-sm" required></td>
+          <td><input class="form-control" type="text" name="myaddress" id="myaddress" required placeholder="User Address"></td>
           <th>Branch</th>
           <td>
-            <select name="branch" required class="form-control input-sm">
-              <option selected value="">Please Select..</option>
-              <?php 
-                $arr = $con->query("select * from branch");
-                if ($arr->num_rows > 0)
-                {
-                  while ($row = $arr->fetch_assoc())
-                  {
-                    echo "<option value='$row[branchId]'>$row[branchName]</option>";
-                  }
-                }
-                else
-                  echo "<option value='1'>Main Branch</option>";
-               ?>
+            <label for="branchId"></label>
+            <input type="hidden" name="branchId" id="branchId">
+            <select name="branchId" id="branchId">
+              <option value="101">101-Mohakhali</option>
+              <option value="201">201-Demra</option>
+              <option value="301">301-Gulshan</option>
+              <option value="401">401-Chittagong</option>
+              <option value="501">501-Khulna</option>
             </select>
-          </td>
+          </td> 
         </tr>
         <tr>
           <td colspan="4">
@@ -139,7 +119,7 @@ if (isset($_GET['del']) && !empty($_GET['del']))
 
   </div>
   <div class="card-footer text-muted">
-    <?php echo bankname; ?>
+    <?php echo 'Fedaral Bank of BRAC'; ?>
   </div>
 </div>
 
@@ -157,8 +137,8 @@ if (isset($_GET['del']) && !empty($_GET['del']))
       <div class="modal-body">
        <form method="POST">
           Enter Details
-         <input class="form-control w-75 mx-auto" type="email" name="email" required placeholder="Email">
-         <input class="form-control w-75 mx-auto" type="password" name="password" required placeholder="Password">
+         <input class="form-control w-75 mx-auto" type="empEmail" name="empEmail" required placeholder="Email">
+         <input class="form-control w-75 mx-auto" type="empPassword" name="empPassword" required placeholder="Password">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

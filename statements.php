@@ -68,7 +68,7 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
   <div class="card-body">
     <div id="list-group rounded-0">
     <?php 
-      $array = $con->query("select * from accounttransaction where userId = '$userData[userID]' order by outerID desc");
+      $array = $con->query("select * from accounttransaction where userId = '$userData[userID]' order by Todaydate desc");
       if ($array ->num_rows > 0) 
       {
          while ($row = $array->fetch_assoc()) 
@@ -83,11 +83,11 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
             }
             if ($row['action'] == 'deduction') 
             {
-              echo "<div class='list-group-item alert alert-danger'>Deduction have been made for  Rs.$row[debit] from your account at $row[Todaydate] in case of $row[outerID]</div>";
+              echo "<div class='list-group-item alert alert-danger'>Deduction have been made for  Rs.$row[debit] from your account at $row[Todaydate] in case of $row[outerAcc]</div>";
             }
             if ($row['action'] == 'transfer') 
             {
-              echo "<div class='list-group-item alert alert-warning'>Transfer have been made for  Rs.$row[debit] from your account at $row[Todaydate] in  account no.$row[outerID]</div>";
+              echo "<div class='list-group-item alert alert-warning'>Transfer have been made for  Rs.$row[debit] from your account at $row[Todaydate] in  account no.$row[outerAcc]</div>";
             }
 
          }
