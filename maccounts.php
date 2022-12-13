@@ -1,4 +1,8 @@
+<-- Updated -->
+
 <?php
+$con = new mysqli('localhost','root','','bms');
+define('bankname', 'Federal Bank of BRAC University');
 session_start();
 if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 ?>
@@ -11,7 +15,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   <?php require 'assets/function.php'; ?>
   <?php if (isset($_GET['delete'])) 
   {
-    if ($con->query("delete from useraccounts where id = '$_GET[id]'"))
+    if ($con->query("delete from customer where userID = '$_GET[userID]'"))
     {
       header("location:mindex.php");
     }
@@ -21,7 +25,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
  <a class="navbar-brand" href="#">
     <img src="images/logo.png" style="object-fit:cover;object-position:center center" width="30" height="30" class="d-inline-block align-top" alt="">
-   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo bankname; ?>
+   <!--  <i class="d-inline-block  fa fa-building fa-fw"></i> --><?php echo 'Federal Bank of BRAC'; ?>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -32,7 +36,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
       <li class="nav-item ">
         <a class="nav-link " href="mindex.php">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">  <a class="nav-link" href="maccounts.php">Accounts</a></li>
+      <li class="nav-item active">  <a class="nav-link" href="maccounts.php">Staff Accounts</a></li>
       <li class="nav-item ">  <a class="nav-link" href="maddnew.php">Add New Account</a></li>
       <li class="nav-item ">  <a class="nav-link" href="mfeedback.php">Feedback</a></li>
       <!-- <li class="nav-item ">  <a class="nav-link" href="transfer.php">Funds Transfer</a></li> -->
@@ -45,32 +49,35 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   </div>
 </nav><br><br><br>
 <?php
+
 if (isset($_POST['saveAccount']))
 {
-  if (!$con->query("insert into login (email,password,type) values ('$_POST[email]','$_POST[password]','cashier')")) {
+  if (!$con->query("insert into employee (empFirstName,empMidName,empLastName,empID,empEmail,empPassword,empSalary,branchId,designation) values ('$_POST[empFirstName]','$_POST[empMidName]','$_POST[empLastName]','$_POST[empID]','$_POST[empEmail]','$_POST[empPassword]','$_POST[empSalary]','$_POST[branchId]','cashier')"))
+  {
     echo "<div claass='alert alert-success'>Failed. Error is:".$con->error."</div>";
   }
 }
 if (isset($_GET['del']) && !empty($_GET['del']))
 {
-  $con->query("delete from login where id ='$_GET[del]'");
+  $con->query("delete from employee where empID ='$_GET[del]'");
 }
-  $array = $con->query("select * from login where type='cashier'");
-  
+
+  $array = $con->query("select empID,empEmail,empPassword,designation from employee where designation='cashier'");
+
  ?>
 <div class="container">
 <div class="card w-100 text-center shadowBlue">
   <div class="card-header">
-    All Staff Accounts <button class="btn btn-outline-info btn-sm float-right" data-toggle="modal" data-target="#exampleModal">Add New Account</button>
+    All Staff Accounts <button class="btn btn-outline-info btn-sm float-right" data-toggle="modal" data-target="#exampleModal">Add New Staff Account</button>
   </div>
   <div class="card-body">
     <table class="table table-bordered">
       <thead>
         <tr>
+          <th>Employee ID</th>
           <th>Email</th>
           <th>Password</th>
-          <th>Account Type</th>
-          <th></th>
+          <th>Designation</th>
         </tr>
       </thead>
       <tbody>
@@ -80,10 +87,11 @@ if (isset($_GET['del']) && !empty($_GET['del']))
             while ($row = $array->fetch_assoc())
             {
               echo "<tr>";
-              echo "<td>".$row['email']."</td>";
-              echo "<td>".$row['password']."</td>";
-              echo "<td>".$row['type']."</td>";
-              echo "<td><a href='maccounts.php?del=$row[id]' class='btn btn-danger btn-sm'>Delete</a></td>";
+              echo "<td>".$row['empID']."</td>";
+              echo "<td>".$row['empEmail']."</td>";
+              echo "<td>".$row['empPassword']."</td>";
+              echo "<td>".$row['designation']."</td>";
+              echo "<td><a href='maccounts.php?del=$row[empID]' class='btn btn-danger btn-sm'>Delete</a></td>";
               echo "</tr>";
             }
           }
@@ -92,7 +100,7 @@ if (isset($_GET['del']) && !empty($_GET['del']))
     </table>
   </div>
   <div class="card-footer text-muted">
-    <?php echo bankname; ?>
+    <?php echo 'Federal Bank of BRAC'; ?>
   </div>
 </div>
 
@@ -110,12 +118,43 @@ if (isset($_GET['del']) && !empty($_GET['del']))
       <div class="modal-body">
        <form method="POST">
           <div class="form-group">
-            <label for="email" class="control-label">Email</label>
-            <input class="form-control" type="email" name="email" id="email" required placeholder="Email">
+            <label for="empID" class="control-label">Employee ID</label>
+            <input class="form-control" type="number" name="empID" id="empID" required placeholder="Employee ID">
           </div>
           <div class="form-group">
-            <label for="password" class="control-label">Password</label>
-            <input class="form-control" type="password" name="password" id="password" required placeholder="Password">
+            <label for="empFirstName" class="control-label">First Name</label>
+            <input class="form-control" type="text" name="empFirstName" id="empFirstName" required placeholder="First Name">
+          </div>
+          <div class="form-group">
+            <label for="empMidName" class="control-label">Middle Name</label>
+            <input class="form-control" type="text" name="empMidName" id="empMidName" required placeholder="Middle Name">
+          </div>
+          <div class="form-group">
+            <label for="empLastName" class="control-label">Last Name</label>
+            <input class="form-control" type="text" name="empLastName" id="empLastName" required placeholder="Last Name">
+          </div>
+          <div class="form-group">
+            <label for="empEmail" class="control-label">Email</label>
+            <input class="form-control" type="email" name="empEmail" id="empEmail" required placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="empPassword" class="control-label">Password</label>
+            <input class="form-control" type="password" name="empPassword" id="empPassword" required placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label for="empSalary" class="control-label">Salary</label>
+            <input class="form-control" type="number" name="empSalary" id="empSalary" required placeholder="Salary">
+          </div>
+          <div class="form-group">
+            <label for="branchId">Branch ID</label>
+            <input type="hidden" name="branchId" id="branchId">
+            <select name="branchId" id="branchId">
+              <option value="101">101-Mohakhali</option>
+              <option value="201">201-Demra</option>
+              <option value="301">301-Gulshan</option>
+              <option value="401">401-Chittagong</option>
+              <option value="501">501-Khulna</option>
+            </select>
           </div>
       </div>
       <div class="modal-footer">
