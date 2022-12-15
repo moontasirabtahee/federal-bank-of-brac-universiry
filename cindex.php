@@ -23,15 +23,15 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
     // }
     if (isset($_POST['withdraw']))
     {
-      setBalance($_POST['amount'],'debit',$_POST['accountNo']);
-      makeTransactionCashier('withdraw',$_POST['amount'],$_POST['checkno'],$_POST['userId']);
+      setBalance($_POST['amount'],'debit',$_POST['otherNo']);
+      makeTransactionCashier('withdraw',$_POST['amount'],1000000000,$_POST['otherNo']);
       $note = "<div class='alert alert-success'>successfully transaction done</div>";
 
     }
     if (isset($_POST['deposit']))
     {
-      setBalance($_POST['amount'],'credit',$_POST['accountNo']);
-      makeTransactionCashier('deposit',$_POST['amount'],$_POST['checkno'],$_POST['userId']);
+      setBalance($_POST['amount'],'credit',$_POST['otherNo']);
+      makeTransactionCashier('deposit',$_POST['amount'],1000000000,$_POST['otherNo']);
       $note = "<div class='alert alert-success'>successfully transaction done</div>";
 
     }
@@ -99,7 +99,6 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
                   <div class='col'>
                     Bank Balance
                     <input type='text' class='form-control my-1'  value='Rs.$row2[accBalance]' readonly required>
-                    <input type='number' class='form-control my-1' name='checkno' placeholder='Write Check Number' required>
                     <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount' max='$row2[accBalance]' required>
                    <button type='submit' name='withdraw' class='btn btn-success btn-bloc btn-sm my-1'> Withdraw</button>
                    <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Deposit</button>
