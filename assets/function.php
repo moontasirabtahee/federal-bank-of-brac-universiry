@@ -73,6 +73,3 @@ function makeTransactionCashier($action,$amount,$other,$userId)
 }
 }
  ?>
-
-if ($array2->num_rows > 0) 
-          { $row2 = $array2->fetch_assoc();
