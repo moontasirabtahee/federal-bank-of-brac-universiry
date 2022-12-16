@@ -18,7 +18,7 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
         $user = $_POST['email'];
         $pass = $_POST['password'];
        
-        $result = $con->query("select * from userAccounts where email='$user' AND password='$pass'");
+        $result = $con->query("select * from account where userEmail='$user' AND userPassword='$pass'");
         if($result->num_rows>0)
         { 
           session_start();
@@ -73,19 +73,19 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
       {
          while ($row = $array->fetch_assoc()) 
          {
-            if ($row['action'] == 'withdraw') 
+            if ($row['theAction'] == 'withdraw') 
             {
               echo "<div class='list-group-item alert alert-secondary'>You withdraw Rs.$row[debit] from your account at $row[Todaydate]</div>";
             }
-            if ($row['action'] == 'deposit') 
+            if ($row['theAction'] == 'deposit') 
             {
               echo "<div class='list-group-item alert alert-success'>You deposit Rs.$row[credit] in your account at $row[Todaydate]</div>";
             }
-            if ($row['action'] == 'deduction') 
+            if ($row['theAction'] == 'deduction') 
             {
               echo "<div class='list-group-item alert alert-danger'>Deduction have been made for  Rs.$row[debit] from your account at $row[Todaydate] in case of $row[outerAcc]</div>";
             }
-            if ($row['action'] == 'transfer') 
+            if ($row['theAction'] == 'transfer') 
             {
               echo "<div class='list-group-item alert alert-warning'>Transfer have been made for  Rs.$row[debit] from your account at $row[Todaydate] in  account no.$row[outerAcc]</div>";
             }

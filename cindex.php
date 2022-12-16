@@ -23,12 +23,21 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
     // }
     if (isset($_POST['withdraw']))
     {
-      
-      setBalance($_POST['amount'],'debit',$_POST['otherNo']);
-      makeTransactionCashier('withdraw',$_POST['amount'],1000000000,$_POST['otherNo']);
-      $note = "<div class='alert alert-success'>successfully transaction done</div>";
+      $array2 = $con->query("select * from account ac,customer cr where ac.userID = cr.userID and accountID  = '$_POST[otherNo]'");
+        // $array3 = $con->query("select * from account where accountID  = '$_POST[otherNo]'");  
+      if ($array2->num_rows > 0) 
+          $row2 = $array2->fetch_assoc();
+          echo ($row2['accBalance']);
+          if($_POST['amount']<$row2['accBalance']-100){
 
-    }
+          setBalance($_POST['amount'],'debit',$_POST['otherNo']);
+          makeTransactionCashier('withdraw',$_POST['amount'],1000000000,$_POST['otherNo']);
+          $note = "<div class='alert alert-success'>successfully transaction done</div>";}
+      else{
+        $note = "<div class='alert alert-success'>Account Balance is less then 100</div>";
+      }
+
+}
     if (isset($_POST['deposit']))
     {
       setBalance($_POST['amount'],'credit',$_POST['otherNo']);
@@ -100,7 +109,7 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
                   <div class='col'>
                     Bank Balance
                     <input type='text' class='form-control my-1'  value='Rs.$row2[accBalance]' readonly required>
-                    <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount' max='$row2[accBalance]' required>
+                    <input type='number' class='form-control my-1' name='amount' placeholder='Write Amount' required>
                    <button type='submit' name='withdraw' class='btn btn-success btn-bloc btn-sm my-1'> Withdraw</button>
                    <button type='submit' name='deposit' class='btn btn-success btn-bloc btn-sm my-1'> Deposit</button>
 
