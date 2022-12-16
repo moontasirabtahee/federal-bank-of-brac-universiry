@@ -69,7 +69,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
   <tbody>
     <?php
       $i=0;
-      $array = $con->query("select * from customer,branch,account where customer.branchID = branch.branchId AND customer.userID=account.userID and account.userID != '100000000'");
+      $array = $con->query("select * from customer,branch,account where customer.branchID = branch.branchId AND customer.userID=account.userID and account.userID != '1'");
       if ($array->num_rows > 0)
       {
         while ($row = $array->fetch_assoc())
@@ -80,7 +80,7 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
         <td><?php echo $row['userFirstName'] ?></td>
         <td><?php echo $row['accountID'] ?></td>
         <td><?php echo $row['branchName'] ?></td>
-        <td>Rs.<?php echo $row['accBalance'] ?></td>
+        <td>Tk.<?php echo $row['accBalance'] ?></td>
         <td><?php echo $row['accType'] ?></td>
         <td><?php echo $row['userEmail'] ?></td>
         <td>

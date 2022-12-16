@@ -31,7 +31,7 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
           if($_POST['amount']<$row2['accBalance']-100){
 
           setBalance($_POST['amount'],'debit',$_POST['otherNo']);
-          makeTransactionCashier('withdraw',$_POST['amount'],1000000000,$_POST['otherNo']);
+          makeTransactionCashier('withdraw',$_POST['amount'],10,$_POST['otherNo']);
           $note = "<div class='alert alert-success'>successfully transaction done</div>";}
       else{
         $note = "<div class='alert alert-success'>Account Balance is less then 100</div>";
@@ -41,7 +41,7 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
     if (isset($_POST['deposit']))
     {
       setBalance($_POST['amount'],'credit',$_POST['otherNo']);
-      makeTransactionCashier('deposit',$_POST['amount'],1000000000,$_POST['otherNo']);
+      makeTransactionCashier('deposit',$_POST['amount'],10,$_POST['otherNo']);
       $note = "<div class='alert alert-success'>successfully transaction done</div>";
 
     }

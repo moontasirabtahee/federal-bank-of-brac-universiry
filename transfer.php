@@ -104,7 +104,7 @@ if(!isset($_SESSION['userId'])){ header('location:login.php');}
                     Account Holder Bank Name.
                     <input type='text' class='form-control' value='$row2[branchName]' readonly required>
                     Enter Amount for tranfer.
-                    <input type='number' name='amount' class='form-control' min='1' max='$userData[accBalance]' required>
+                    <input type='number' name='amount' class='form-control' min='1' max='$userData[accBalance]-100' required>
                     <button type='submit' name='transferSelf' class='btn btn-primary btn-bloc btn-sm my-1'>Tranfer</button>
                   </form>
                 </div>";

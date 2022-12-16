@@ -40,7 +40,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`accountID`, `accBalance`, `opendate`, `accType`, `userID`) VALUES
-(1000000000, '1000000000000000000000000', '2022-12-15 14:29:22', 'Central', 100000000),
+(10, '1000000000000000000000000', '2022-12-15 14:29:22', 'Central', 1),
 (9999, '9531', '2018-09-14 18:00:00', 'Savings', 999),
 (101101, '5000', '2018-09-14 18:00:00', 'Savings account', 1011),
 (201101, '1000', '2018-02-04 18:00:00', 'Salary account', 2011),
@@ -150,7 +150,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`userID`, `userEmail`, `userPassword`, `userFirstName`, `userMidName`, `userLastName`, `city`, `myaddress`, `branchID`, `Todaydate`) VALUES
-(100000000, 'central@central.co', 'qwertyuiop', 'Federal ', 'Bank of', 'BRAC University', 'Dhaka', 'FBOBU', 101, '2022-12-15 14:28:17'),
+(1, 'central@central.co', 'qwertyuiop', 'Federal ', 'Bank of', 'BRAC University', 'Dhaka', 'FBOBU', 101, '2022-12-15 14:28:17'),
 (999, 'customer@customer.com', '1234', 'x', 'y', 'z', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
 (1011, 'abir@gmail.com', '1204179212', 'Abir', 'Muhtadi', 'Khan', 'MOHAKHALI', 'TB GATE', 101, '2022-12-09 13:54:31'),
 (2011, 'naima@gmail.com', '1204179221', 'Naima', 'Farhana', 'Khan', 'DEMRA', 'KOTOWALI THANA', 201, '2022-12-09 13:54:31'),
@@ -309,49 +309,49 @@ ALTER TABLE `notice`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
+  MODIFY `accountID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `accounttransaction`
 --
 ALTER TABLE `accounttransaction`
-  MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `bank`
 --
 ALTER TABLE `bank`
-  MODIFY `bankId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=501;
+  MODIFY `bankId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `branchId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=502;
+  MODIFY `branchId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100000003;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9900;
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12347;
+  MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `notice`
 --
 ALTER TABLE `notice`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Constraints for dumped tables
