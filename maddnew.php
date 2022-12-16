@@ -47,13 +47,14 @@ if(!isset($_SESSION['managerId'])){ header('location:login.php');}
 <?php
 if (isset($_POST['saveAccount']))
 {
-  if (!$con->query("insert into customer (userID, userEmail, userPassword, userFirstName, userMidName, userLastName, city, myaddress, branchID) values ('$_POST[userID]', '$_POST[userEmail]', '$_POST[userPassword]', '$_POST[userFirstName]', '$_POST[userMidName]','$_POST[userLastName]','$_POST[city]','$_POST[myaddress]','$_POST[branchId]')"))
+  if (!$con->query("insert into customer (userEmail, userPassword, userFirstName, userMidName, userLastName, city, myaddress, branchID) values ('$_POST[userEmail]', '$_POST[userPassword]', '$_POST[userFirstName]', '$_POST[userMidName]', '$_POST[userLastName]', '$_POST[city]', '$_POST[myaddress]', '$_POST[branchId]')"))
   {
     echo "<div claass='alert alert-success'>Failed. Error is:".$con->error."</div>";
   }
   else
-    echo "<div class='alert alert-info text-center'>Account added Successfully</div>";
-
+  $userID = $con->insert_id;
+  $con->query("insert into account (accBalance,accType,userID) values ('$_POST[accBalance]','$_POST[accType]',$userID)");
+  echo "<div class='alert alert-info text-center'>Account added Successfully</div>";
 }
 if (isset($_GET['del']) && !empty($_GET['del']))
 {
@@ -72,14 +73,13 @@ if (isset($_GET['del']) && !empty($_GET['del']))
       <tbody>
         <tr>
           <form method="POST">
-          <th>ID</th>
-          <td><input class="form-control" type="number" name="userID" id="userID" required placeholder="User ID"></td>
           <th>Email</th>
           <td><input class="form-control" type="email" name="userEmail" id="userEmail" required placeholder="User Email"></td>
           <th>Password</th>
           <td><input class="form-control" type="password" name="userPassword" id="userPassword" required placeholder="User Password"></td>
+          <th>City</th>
+          <td><input class="form-control" type="text" name="city" id="city" required placeholder="User City"></td>
         </tr>
-
         <tr>
           <th>First Name </th>
           <td><input class="form-control" type="text" name="userFirstName" id="userFirstName" required placeholder="User First Name"></td>
@@ -87,11 +87,8 @@ if (isset($_GET['del']) && !empty($_GET['del']))
           <td><input class="form-control" type="text" name="userMidName" id="userMidName"  required placeholder="User Middle Name"></td>
           <th>Last Name</th>
           <td><input class="form-control" type="text" name="userLastName" id="userLastName" required placeholder="User Last Name"></td>
-          
-        </tr>
+</tr>
         <tr>
-          <th>City</th>
-          <td><input class="form-control" type="text" name="city" id="city" required placeholder="User City"></td>
           <th>Address</th>
           <td><input class="form-control" type="text" name="myaddress" id="myaddress" required placeholder="User Address"></td>
           <th>Branch</th>
@@ -99,13 +96,29 @@ if (isset($_GET['del']) && !empty($_GET['del']))
             <label for="branchId"></label>
             <input type="hidden" name="branchId" id="branchId">
             <select name="branchId" id="branchId">
-              <option value="101">101-Mohakhali</option>
-              <option value="201">201-Demra</option>
-              <option value="301">301-Gulshan</option>
-              <option value="401">401-Chittagong</option>
-              <option value="501">501-Khulna</option>
+              <option value="101">Mohakhali</option>
+              <option value="201">Demra</option>
+              <option value="301">Gulshan</option>
+              <option value="401">Chittagong</option>
+              <option value="501">Khulna</option>
             </select>
-          </td> 
+          </td>
+        <th>Deposite Balance</th>
+        <td><input class="form-control" type="number" name="accBalance" id="accBalance" required placeholder="First Deposite"></td>
+        </tr>
+        <tr>
+        <th>Account Type</th>
+          <td>
+            <label for="accType"></label>
+            <input type="hidden" name="accType" id="accType">
+            <select name="accType" id="accType">
+              <option value="Savings account">Savings</option>
+              <option value="Salary account">Salary</option>
+              <option value="Fixed deposite account">Fixed Deposite</option>
+              <option value="Recurring deposit account">Recurring Deposite</option>
+              <option value="NRI account">NRI</option>
+            </select>
+          </td>
         </tr>
         <tr>
           <td colspan="4">
@@ -115,8 +128,6 @@ if (isset($_GET['del']) && !empty($_GET['del']))
         </tr>
       </tbody>
     </table>
-    
-
   </div>
   <div class="card-footer text-muted">
     <?php echo 'Fedaral Bank of BRAC'; ?>

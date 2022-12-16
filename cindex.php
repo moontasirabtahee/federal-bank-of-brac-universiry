@@ -23,6 +23,7 @@ if(!isset($_SESSION['cashId'])){ header('location:login.php');}
     // }
     if (isset($_POST['withdraw']))
     {
+      
       setBalance($_POST['amount'],'debit',$_POST['otherNo']);
       makeTransactionCashier('withdraw',$_POST['amount'],1000000000,$_POST['otherNo']);
       $note = "<div class='alert alert-success'>successfully transaction done</div>";
